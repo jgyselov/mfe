@@ -4,7 +4,7 @@ module.exports = {
     rules: [
       {
         test: /\.m?js$/,
-        exclude: /node_module/,
+        exclude: /node_modules/,
         use: {
           loader: 'babel-loader',
           options: {
@@ -13,10 +13,9 @@ module.exports = {
               '@babel/preset-env'
             ],
             plugins: ['@babel/plugin-transform-runtime'],
-          }
-        }
-      }
+          },
+        },
+      },
     ],
   },
-
 };

@@ -1,6 +1,9 @@
 
 const { merge } = require('webpack-merge');
 const commonConfig = require('./webpack.common');
+const packageJson = require('../package.json');
+
+const ModuleFederationPlugin = require('webpack/lib/container/ModuleFederationPlugin');
 
 const devConfig = {
   mode: 'development',
@@ -8,7 +11,7 @@ const devConfig = {
     port: 8080,
     historyApiFallback: {
       index: 'index.html',
-    }
+    },
   },
   plugins: [
     new ModuleFederationPlugin({
@@ -18,7 +21,7 @@ const devConfig = {
       },
       shared: packageJson.dependencies,
     }),
-  ]
+  ],
 };
 
 module.exports = merge(commonConfig, devConfig);

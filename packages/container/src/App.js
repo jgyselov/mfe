@@ -1,12 +1,12 @@
-import React from "react";
-import MarketingApp from "./components/MarketingApp";
+import React from 'react';
+import MarketingApp from './components/MarketingApp';
 
-export default () =>  {
+export default () => {
   return (
     <div>
-    <h1>Container</h1>
-    <hr></hr>
-    <MarketingApp></MarketingApp>
+      <h1>Hi there!!!</h1>
+      <hr />
+      <MarketingApp />
     </div>
   );
 };
