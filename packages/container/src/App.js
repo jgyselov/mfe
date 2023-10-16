@@ -1,6 +1,10 @@
-import React, { lazy, Suspense } from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import { StylesProvider, createGenerateClassName } from '@material-ui/core/styles';
+import React, { lazy, Suspense, useState, useEffect } from 'react';
+import { Router, Route, Switch, Redirect } from 'react-router-dom';
+import {
+  StylesProvider,
+  createGenerateClassName,
+} from '@material-ui/core/styles';
+import { createBrowserHistory } from 'history';
 
 import Header from './components/Header';
 import Progress from './components/Progress';
@@ -9,28 +13,35 @@ const MarketingLazy = lazy(() => import('./components/MarketingApp'));
 const AuthLazy = lazy(() => import('./components/AuthApp'));
 
 const generateClassName = createGenerateClassName({
-  productionPrefix: "co",
+  productionPrefix: 'co',
 });
 
-export default () => {
+const history = createBrowserHistory();
 
-  const [isSingedIn, setSignedIn] = React.useState(false);
+export default () => {
+  const [isSignedIn, setIsSignedIn] = useState(false);
+
+  useEffect(() => {
+    if (isSignedIn) {
+      history.push('/dashboard');
+    }
+  }, [isSignedIn]);
 
   return (
-    <BrowserRouter>
-      <StylesProvider>
+    <Router history={history}>
+      <StylesProvider generateClassName={generateClassName}>
         <div>
-          <Header isSignedIn={isSingedIn} onSignOut={() => setSignedIn(false)} />
+          <Header onSignOut={() => setIsSignedIn(false)} isSignedIn={isSignedIn} />
           <Suspense fallback={<Progress />}>
             <Switch>
-              <Route path={"/auth"}>
-                <AuthLazy onSignIn={() => setSignedIn(true)} />
+              <Route path="/auth">
+                <AuthLazy onSignIn={() => setIsSignedIn(true)} />
               </Route>
-              <Route path={"/"} component={MarketingLazy} />
+              <Route path="/" component={MarketingLazy} />
             </Switch>
           </Suspense>
         </div>
       </StylesProvider>
-    </BrowserRouter>
+    </Router>
   );
 };
